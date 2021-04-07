@@ -1,0 +1,24 @@
+<div>
+  <div *ngIf="editing">
+    <div *ngIf="type==='text'">
+      <textarea *ngIf="isValueObject()" rows="10" cols="10" [required]="required" (blur)="onBlur($event)" [name]="value"
+        [ngModel]="value | json" (ngModelChange)="value=$event" [placeholder]="label"></textarea>
+      <input *ngIf="!isValueObject()" [required]="required" (blur)="onBlur($event)" [name]="value" [(ngModel)]="value"
+        [placeholder]="label" />
+    </div>
+    <div *ngIf="type==='integer'">
+      <textarea *ngIf="isValueObject()" rows="10" cols="10" [required]="required" (blur)="onBlur($event)" [name]="value"
+        [ngModel]="value | json" (ngModelChange)="value=$event" [placeholder]="label"></textarea>
+        <input *ngIf="!isValueObject()" [required]="required" (blur)="onBlur($event)" [name]="value" [(ngModel)]="value"
+        [placeholder]="label" />
+    </div>
+
+
+  </div>
+  <div *ngIf="!editing">
+    <a *ngIf="isValueObject()" href="#" (click)="beginEdit(value)" (focus)="beginEdit(value)" tabindex="0">{{ value |
+      json }}</a>
+    <a *ngIf="!isValueObject()" href="#" (click)="beginEdit(value)" (focus)="beginEdit(value)" tabindex="0">{{ value
+      }}</a>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+.img-brand-swamp {
+    max-height: 40px;
+    max-width: 50%;
+    overflow: visible;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.text-p {
+
+  padding: 1rem 1rem;
+  margin-bottom: 1rem;
+  background-color: #eceeef;
+  border-radius: .3rem;
+}

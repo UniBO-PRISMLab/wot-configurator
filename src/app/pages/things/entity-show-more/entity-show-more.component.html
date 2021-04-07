@@ -1,0 +1,202 @@
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.6)" size="large" color="white" type="ball-running-dots">
+
+  <p style="font-size: 20px; color: white">Loading...</p>
+
+</ngx-spinner>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div class="row mb-4">
+
+  <div class="col-md-4">
+    <input type="text" class="form-control" [(ngModel)]="idEntityModel" placeholder="ID" [readonly]="isEdit">
+  </div>
+
+
+  <!-- </div> -->
+  <div class="col-md-5">
+    <div class="row justify-content-end">
+      <button class="btn btn-outline-secondary ml-2" (click)="backToEntityList()">
+        < Back</button>
+
+          <button class="btn btn-outline-warning ml-2" (click)="changeJsonView()"> JSON</button>
+    </div>
+
+  </div>
+</div>
+
+<table class="table table-hover">
+  <thead>
+    <tr class="bg-primary text-light">
+      <th>Name</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let f of simpleFields">
+      <td>
+        {{f.name}}
+      </td>
+      <td>
+        {{f.value}}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="properties.length !== 0">
+  <h2>Properties</h2>
+  <table class="table table-hover">
+    <thead>
+      <tr class="bg-primary text-light">
+        <th>Name</th>
+        <th>Description</th>
+        <th>Value</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let property of properties; let i = index" [attr.data-index]="i">
+        <td>
+          {{property.name}}
+        </td>
+        <td>
+          {{property.description}}
+        </td>
+        <td>
+          <div *ngIf="property.isObject; else notAObject">
+            <button type="button" class="btn btn-outline-primary" (click)="open(content, 'properties')"
+              attr.data-target="#{{property.name}}">
+              Show Property
+            </button>
+
+            <ng-template #content let-modal tabindex="-1" role="dialog">
+              <div class="modal-header">
+                <h5 class="modal-title" id="performActionlLabel">{{property.name}}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                  (click)="modal.dismiss('Cross click')">
+                  <span aria-hidden=" true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-body">
+                {{property.value}}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="modal.close()">Close</button>
+              </div>
+            </ng-template>
+          </div>
+          <ng-template #notAObject>
+            <div *ngIf="property.readOnly; else writable">
+              <div *ngIf="property.value == null; else notNull">
+                <button type="button" class="btn btn-outline-secondary" disabled>NULL</button>
+              </div>
+              <ng-template #notNull>{{property.value}}</ng-template>
+            </div>
+            <ng-template #writable>
+              <div *ngIf="property.value == null; else notNull">
+                <button type="button" class="btn btn-outline-secondary" disabled>NULL</button>
+              </div>
+              <ng-template #notNull>
+                <app-inline-edit [(ngModel)]="property.value" (change)="autoSave(property.name,property.value)">
+                </app-inline-edit>
+              </ng-template>
+            </ng-template>
+          </ng-template>
+
+
+        </td>
+        <td>
+          <button class="btn btn-outline-warning" (click)="refreshProperty(property.link, i)">
+            <i class="fa fa-refresh"></i> Reload
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="actions.length !== 0">
+  <h2>Actions</h2>
+  <table class="table table-hover">
+    <thead>
+      <tr class="bg-primary text-light">
+        <th>Name</th>
+        <th>Description</th>
+        <th>Path</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let action of actions">
+        <td>
+          {{action.name}}
+        </td>
+        <td>
+          {{action.description}}
+        </td>
+        <td>
+          <button type="button" class="btn btn-outline-primary" (click)="open(content, 'actions')"
+            attr.data-target="#{{action.name}}">
+            Perform Action
+          </button>
+
+          <ng-template #content let-modal tabindex="-1" role="dialog">
+            <div class="modal-header">
+              <h5 class="modal-title" id="performActionlLabel">{{action.name}}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                (click)="modal.dismiss('Cross click')">
+                <span aria-hidden=" true">&times;</span>
+              </button>
+            </div>
+
+            <div *ngIf="action.input.description" class="modal-body">
+              <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                  <p class="card-text">{{action.input.description}}</p>
+                </div>
+              </div>
+
+              <div *ngIf="action.input.enum">
+                <select id="itemSelection" class="form-control mr-sm-4" [(ngModel)]="selectedOption">
+                  <option value="">Choose value</option>
+                  <option *ngFor="let item of action.input.enum" [value]="item">{{ item }}</option>
+                </select>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" (click)="sendAction(action.name)">Send</button>
+            </div>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="events.length !== 0">
+  <h2>Events</h2>
+  <table class="table table-hover">
+    <thead>
+      <tr class="bg-primary text-light">
+        <th>Name</th>
+        <th>Description</th>
+        <th>Path</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let event of events">
+        <td>
+          {{event.name}}
+        </td>
+        <td>
+          {{event.description}}
+        </td>
+        <td>
+          <a href="{{event.value}}">{{event.value}}</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

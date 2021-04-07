@@ -1,0 +1,41 @@
+<app-page-header page-title="Web Things">
+</app-page-header>
+
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.6)" size="large" color="white" type="ball-running-dots">
+
+  <p style="font-size: 20px; color: white">Loading...</p>
+
+</ngx-spinner>
+
+<!-- <div class="row mb-3 d-flex justify-content-center">
+  <div class="col-lg-10">
+    <input [(ngModel)]="searchText" placeholder="Search..." class="form-control">
+  </div>
+</div> -->
+
+<table class="table table-hover">
+  <thead>
+    <tr class="bg-primary text-light">
+      <th [class.active]="order === 'title'" (click)="setOrder('title')"> Title <span [hidden]="reverse">▼</span><span
+          [hidden]="!reverse">▲</span> </th>
+      <th *ngIf="!isArrowhead" class="text-center">Description</th>
+      <th class="text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let thing of resources | orderBy: order:reverse: true ">
+      <td>
+        <a [routerLink]="['show-more', thing.title ]" [state]="thing" type="text">{{thing.title}}</a>
+      </td>
+      <td *ngIf="!isArrowhead">
+        {{thing.description}}
+      </td>
+      <td class="text-center">
+        <a [routerLink]="['show-more', thing.title ]" [state]="thing" class="btn btn-outline-info btn-sm mr-2">View</a>
+
+        <a [routerLink]="['raw-editor', thing.title ]" [state]="thing" class="btn btn-outline-warning btn-sm mr-2">JSON</a>
+
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,31 @@
+
+<ngx-spinner
+  bdColor = "rgba(51, 51, 51, 0.6)"
+  size = "large"
+  color = "white"
+  type = "ball-running-dots">
+
+  <p style="font-size: 20px; color: white">Loading...</p>
+
+</ngx-spinner>
+
+<div class="form-group">
+
+  <div class="row  justify-content-end mb-4 mt-4">
+        <button (click)="showMoreEntity()" class="btn btn-outline-primary mr-2"  [hidden]="!isShowButtonChangeView()" > Change View</button>
+        <button (click)="copyInputMessage(input)" class="btn btn-outline-info mr-2" >Copy from Textarea</button>
+        <button (click)="backToThingsList()" class="btn btn-outline-secondary mr-2" >Back to WoT List</button>
+  </div>
+
+  <textarea #entityTextArea disabled class="form-control rounded-0"  rows="15" [(ngModel)]="entityStr" #input>
+
+  </textarea>
+
+  <div class="row mb-4 mt-4">
+    <div class="col text-center">
+      <button (click)="showMoreEntity()" class="btn btn-outline-primary mr-2" [hidden]="!isShowButtonChangeView()" > Change View</button>
+      <button (click)="copyInputMessage(input)" class="btn btn-outline-info mr-2" >Copy from Textarea</button>
+      <button (click)="backToThingsList()" class="btn btn-outline-secondary mr-2" >Back to WoT List</button>
+    </div>
+  </div>
+</div>
