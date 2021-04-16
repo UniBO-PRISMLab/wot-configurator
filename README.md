@@ -46,5 +46,9 @@ $ docker build -t wotc:1.0 .
 $ sudo docker run -v ${PWD}:/app -v /app/node_modules -p 4200:4200 wotc:1.0
 ```
 
+## License
+
+This project is under the [MIT](LICENSE) license and it is a branch of the [IoT Entitiy Editor](https://git.rnp.br/swamp-essentials/management/swamp-iot-ee) from the [SWAMP Project](http://swamp-project.org/). 
+
 
 
